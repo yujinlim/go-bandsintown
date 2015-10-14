@@ -7,7 +7,7 @@ go get github.com/yujinlim/go-bandsintown
 ```
 
 ## Example
-```
+```go
 package main
 
 import "github.com/yujinlim/go-bandsintown"
