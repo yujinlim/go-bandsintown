@@ -1,4 +1,4 @@
-# go-bandsintown [![Build Status](https://travis-ci.org/yujinlim/go-bandsintown.svg?branch=master)](https://travis-ci.org/yujinlim/go-bandsintown)
+# go-bandsintown [![GoDoc](https://godoc.org/github.com/yujinlim/go-bandsintown?status.svg)](https://godoc.org/github.com/yujinlim/go-bandsintown) [![Build Status](https://travis-ci.org/yujinlim/go-bandsintown.svg?branch=master)](https://travis-ci.org/yujinlim/go-bandsintown)
 > bandsintown golang api package
 
 ## Usage
