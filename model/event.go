@@ -24,7 +24,10 @@ func (t *DateTime) UnmarshalJSON(data []byte) error {
 	t1, err := time.Parse("2006-01-02T15:04:05", current)
 
 	if err != nil {
-		return err
+		t1, err = time.Parse(time.RFC3339, current)
+		if err != nil {
+			return err
+		}
 	}
 
 	*t = DateTime{t1}
@@ -33,9 +36,9 @@ func (t *DateTime) UnmarshalJSON(data []byte) error {
 }
 
 func (t *DateTime) MarshalJSON() ([]byte, error) {
-	b := make([]byte, 0, len("2006-01-02T15:04:05")+2)
+	b := make([]byte, 0, len(time.RFC3339)+2)
 	b = append(b, '"')
-	b = t.AppendFormat(b, "2006-01-02T15:04:05")
+	b = t.AppendFormat(b, time.RFC3339)
 	b = append(b, '"')
 	return b, nil
 }
