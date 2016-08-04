@@ -3,6 +3,10 @@ package bands
 
 import (
 	"fmt"
+	"log"
+	"time"
+
+	"github.com/bradfitz/latlong"
 	"github.com/tj/go-debug"
 	"github.com/yujinlim/go-bandsintown/model"
 )
@@ -24,6 +28,26 @@ type ArtistApi interface {
 
 type Client struct {
 	API_KEY string
+}
+
+// parseEvents parse event to grab timezone
+func parseEvents(events []model.Event) []model.Event {
+	parsedEvents := make([]model.Event, 0)
+
+	for i := range events {
+		event := events[i]
+		tz := latlong.LookupZoneName(float64(event.Venue.Latitude), float64(event.Venue.Longitude))
+		loc, err := time.LoadLocation(tz)
+		if err != nil {
+			continue
+		}
+		log.Println(event.Datetime.Time)
+		event.Datetime.Time = time.Date(event.Datetime.Time.Year(), event.Datetime.Time.Month(), event.Datetime.Time.Day(), event.Datetime.Time.Hour(), event.Datetime.Time.Minute(), event.Datetime.Time.Second(), event.Datetime.Time.Nanosecond(), loc)
+		log.Println(event.Datetime.Time)
+		parsedEvents = append(parsedEvents, event)
+	}
+
+	return parsedEvents
 }
 
 // create new bandsintown api client
@@ -57,6 +81,7 @@ func (c Client) GetArtistEvents(name string) ([]model.Event, error) {
 	}
 
 	trace("events %d", len(events))
+	events = parseEvents(events)
 
 	return events, nil
 }
