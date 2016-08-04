@@ -1,4 +1,4 @@
-// This is a BandsInTown golang api package that supports getting artist and artist's events
+// bands This is a BandsInTown golang api package that supports getting artist and artist's events
 package bands
 
 import (
@@ -26,16 +26,16 @@ type ArtistApi interface {
 	GetArtistEvents() []model.Event
 }
 
+// Client client struct that stores api key and others properties
 type Client struct {
 	API_KEY string
 }
 
 // parseEvents parse event to grab timezone
 func parseEvents(events []model.Event) []model.Event {
-	parsedEvents := make([]model.Event, 0)
+	var parsedEvents []model.Event
 
-	for i := range events {
-		event := events[i]
+	for _, event := range events {
 		tz := latlong.LookupZoneName(float64(event.Venue.Latitude), float64(event.Venue.Longitude))
 		loc, err := time.LoadLocation(tz)
 		if err != nil {
@@ -50,13 +50,13 @@ func parseEvents(events []model.Event) []model.Event {
 	return parsedEvents
 }
 
-// create new bandsintown api client
+// New create new bandsintown api client
 func New(key string) *Client {
 	m := Client{key}
 	return &m
 }
 
-// get artist information based on artist name
+// GetArtist get artist information based on artist name
 func (c *Client) GetArtist(name string) (model.Artist, error) {
 	var artist model.Artist
 	url := fmt.Sprintf("%s/%s?app_id=%s&api_version=%s&format=json", URL, name, c.API_KEY, VERSION)
@@ -70,7 +70,7 @@ func (c *Client) GetArtist(name string) (model.Artist, error) {
 	return artist, nil
 }
 
-// get artist's events by name
+// GetArtistEvents get artist's events by name
 func (c Client) GetArtistEvents(name string) ([]model.Event, error) {
 	var events []model.Event
 	url := fmt.Sprintf("%s/%s/events?app_id=%s&api_version=%s&format=json", URL, name, c.API_KEY, VERSION)
