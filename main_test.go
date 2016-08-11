@@ -40,6 +40,8 @@ func TestGetArtistEvents(t *testing.T) {
 
 	assert.Nil(t, err)
 	assert.True(t, len(events) > 0, "events should return more than 1")
+	event := events[0]
+	assert.NotNil(t, event.ID)
 }
 
 func TestEventsParsing(t *testing.T) {
