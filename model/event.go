@@ -3,6 +3,7 @@ package model
 import "time"
 
 type Event struct {
+	ID              int64    `json:"id"`
 	Name            string   `json:"name"`
 	Title           string   `json:"title"`
 	Datetime        DateTime `json:"datetime"`
