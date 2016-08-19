@@ -1,9 +1,11 @@
 package bands
 
 import (
+	"encoding/json"
 	"errors"
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 const (
@@ -38,6 +40,19 @@ func TestGetArtistEvents(t *testing.T) {
 
 	assert.Nil(t, err)
 	assert.True(t, len(events) > 0, "events should return more than 1")
+	event := events[0]
+	assert.NotNil(t, event.ID)
+}
+
+func TestEventsParsing(t *testing.T) {
+	events, err := client.GetArtistEvents(VALID_ARTIST)
+	t.Log(events)
+	assert.Nil(t, err)
+	payload, err := json.Marshal(events)
+	assert.Nil(t, err)
+
+	err = json.Unmarshal(payload, &events)
+	assert.Nil(t, err)
 }
 
 func TestGetArtistNotFound(t *testing.T) {
