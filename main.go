@@ -69,7 +69,6 @@ func New(key string) *Client {
 func (c *Client) GetArtist(name string) (model.Artist, error) {
 	var artist model.Artist
 	url := fmt.Sprintf("%s/%s?app_id=%s&api_version=%s&format=json", URL, name, c.API_KEY, VERSION)
-
 	if err := get(url, &artist); err != nil {
 		return artist, err
 	}
@@ -82,8 +81,7 @@ func (c *Client) GetArtist(name string) (model.Artist, error) {
 // GetArtistEvents get artist's events by name
 func (c Client) GetArtistEvents(name string) ([]model.Event, error) {
 	var events wrapperEvents
-	url := fmt.Sprintf("%s/%s/events?app_id=%s&api_version=%s&format=json", URL, name, c.API_KEY, VERSION)
-
+	url := fmt.Sprintf("%s/%s/events?app_id=%s&api_version=%s&format=json&date=all", URL, name, c.API_KEY, VERSION)
 	if err := get(url, &events); err != nil {
 		trace("error %s", err)
 		return events.events, err
